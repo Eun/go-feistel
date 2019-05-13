@@ -18,7 +18,7 @@ func BenchmarkMemClr8(b *testing.B) {
 
 	b.Run("for i loop", func(b *testing.B) {
 		clr := func(b [8]byte) {
-			for i := 0; i < 8; i++{
+			for i := 0; i < 8; i++ {
 				b[i] = zero
 			}
 		}

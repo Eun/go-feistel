@@ -1,6 +1,6 @@
 # go-feistel [![Travis](https://img.shields.io/travis/Eun/go-feistel.svg)](https://travis-ci.org/Eun/go-feistel) [![Codecov](https://img.shields.io/codecov/c/github/Eun/go-feistel.svg)](https://codecov.io/gh/Eun/go-feistel) [![GoDoc](https://godoc.org/github.com/Eun/go-feistel?status.svg)](https://godoc.org/github.com/Eun/go-feistel) [![go-report](https://goreportcard.com/badge/github.com/Eun/go-feistel)](https://goreportcard.com/report/github.com/Eun/go-feistel)
 This package implements the Feistel cipher in go.  
-It contains the pure Feistel [Encrypt](feistel.go#L3)/[Decrypt](feistel.go#L19) functions as well as
+It contains the pure Feistel [Encrypt](feistel.go#L5)/[Decrypt](feistel.go#L23) functions as well as
 ECB and CBC implementations. 
 
 ```go

@@ -8,6 +8,7 @@ import (
 
 type ecb struct{}
 
+// ECB contains the Encrypt and Decrypt functions using the ECB algorithm
 var ECB ecb
 
 // EncryptReader reads data from an reader and writes the encrypted data to the writer

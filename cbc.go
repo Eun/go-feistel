@@ -8,10 +8,11 @@ import (
 
 type cbc struct{}
 
+// CBC contains the Encrypt and Decrypt functions using the CBC algorithm
 var CBC cbc
 
 // EncryptReader reads data from an reader and writes the encrypted data to the writer
-func (cbc) EncryptReader(r io.Reader, w io.Writer, rounds int, keys []uint32, previousBlock uint32) error {
+func (cbc) EncryptReader(r io.Reader, w io.Writer, rounds int, keys []uint32, previousBlock uint64) error {
 	var block [8]byte
 	prevLeft := uint32(previousBlock>>32) & 0xFFFFFFFF
 	prevRight := uint32(previousBlock) & 0xFFFFFFFF
@@ -36,7 +37,7 @@ func (cbc) EncryptReader(r io.Reader, w io.Writer, rounds int, keys []uint32, pr
 }
 
 // Encrypt encrypts a provided buffer and returns it
-func (cbc) Encrypt(buf []byte, rounds int, keys []uint32, previousBlock uint32) ([]byte, error) {
+func (cbc) Encrypt(buf []byte, rounds int, keys []uint32, previousBlock uint64) ([]byte, error) {
 	var out bytes.Buffer
 	if err := CBC.EncryptReader(bytes.NewBuffer(buf), &out, rounds, keys, previousBlock); err != nil {
 		return nil, err
@@ -44,9 +45,8 @@ func (cbc) Encrypt(buf []byte, rounds int, keys []uint32, previousBlock uint32) 
 	return out.Bytes(), nil
 }
 
-
 // EncryptUInt64 encrypts a provided uint64 and returns it
-func (cbc) EncryptUInt64(n uint64, rounds int, keys []uint32, previousBlock uint32) (uint64, error) {
+func (cbc) EncryptUInt64(n uint64, rounds int, keys []uint32, previousBlock uint64) (uint64, error) {
 	buf := make([]byte, 8)
 	binary.BigEndian.PutUint64(buf, n)
 	var err error
@@ -55,13 +55,13 @@ func (cbc) EncryptUInt64(n uint64, rounds int, keys []uint32, previousBlock uint
 }
 
 // EncryptInt64 encrypts a provided int64 and returns it
-func (cbc) EncryptInt64(n int64, rounds int, keys []uint32, previousBlock uint32) (int64, error) {
+func (cbc) EncryptInt64(n int64, rounds int, keys []uint32, previousBlock uint64) (int64, error) {
 	i, err := CBC.EncryptUInt64(uint64(n), rounds, keys, previousBlock)
 	return (int64(i)), err
 }
 
 // DecryptReader reads data from an reader and writes the decrypted data to the writer
-func (cbc) DecryptReader(r io.Reader, w io.Writer, rounds int, keys []uint32, previousBlock uint32) error {
+func (cbc) DecryptReader(r io.Reader, w io.Writer, rounds int, keys []uint32, previousBlock uint64) error {
 	var block [8]byte
 	var savedLeft uint32
 	var savedRight uint32
@@ -89,7 +89,7 @@ func (cbc) DecryptReader(r io.Reader, w io.Writer, rounds int, keys []uint32, pr
 }
 
 // Decrypt decrypts a provided buffer and returns it
-func (cbc) Decrypt(buf []byte, rounds int, keys []uint32, previousBlock uint32) ([]byte, error) {
+func (cbc) Decrypt(buf []byte, rounds int, keys []uint32, previousBlock uint64) ([]byte, error) {
 	var out bytes.Buffer
 	if err := CBC.DecryptReader(bytes.NewBuffer(buf), &out, rounds, keys, previousBlock); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (cbc) Decrypt(buf []byte, rounds int, keys []uint32, previousBlock uint32) 
 }
 
 // DecryptUInt64 decrypts a provided uint64 and returns it
-func (cbc) DecryptUInt64(n uint64, rounds int, keys []uint32, previousBlock uint32) (uint64, error) {
+func (cbc) DecryptUInt64(n uint64, rounds int, keys []uint32, previousBlock uint64) (uint64, error) {
 	buf := make([]byte, 8)
 	binary.BigEndian.PutUint64(buf, n)
 	var err error
@@ -107,7 +107,7 @@ func (cbc) DecryptUInt64(n uint64, rounds int, keys []uint32, previousBlock uint
 }
 
 // DecryptUnt64 decrypts a provided int64 and returns it
-func (cbc) DecryptInt64(n int64, rounds int, keys []uint32, previousBlock uint32) (int64, error) {
+func (cbc) DecryptInt64(n int64, rounds int, keys []uint32, previousBlock uint64) (int64, error) {
 	i, err := CBC.DecryptUInt64(uint64(n), rounds, keys, previousBlock)
 	return (int64(i)), err
 }

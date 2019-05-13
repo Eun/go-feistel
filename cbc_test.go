@@ -10,7 +10,7 @@ func TestCBCEncryptDecrypt(t *testing.T) {
 		Input         []byte
 		Rounds        int
 		Keys          []uint32
-		PreviousBlock uint32
+		PreviousBlock uint64
 	}{
 		{[]byte("Hello World"), 8, []uint32{0xDEADBEEF}, 0xFEEDFACE},
 	}
@@ -35,7 +35,7 @@ func TestCBCEncryptDecryptInt64(t *testing.T) {
 		Input         int64
 		Rounds        int
 		Keys          []uint32
-		PreviousBlock uint32
+		PreviousBlock uint64
 	}{
 		{123456789, 8, []uint32{0xDEADBEEF}, 0xFEEDFACE},
 	}
@@ -60,7 +60,7 @@ func TestCBCEncryptDecryptUInt64(t *testing.T) {
 		Input         uint64
 		Rounds        int
 		Keys          []uint32
-		PreviousBlock uint32
+		PreviousBlock uint64
 	}{
 		{123456789, 8, []uint32{0xDEADBEEF}, 0xFEEDFACE},
 	}

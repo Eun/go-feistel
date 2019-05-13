@@ -1,5 +1,7 @@
 package feistel
 
+// Encrypt takes a left and right uint32 and encrypts it using the Feistel cipher,
+// it returns the encrypted left and right parts
 func Encrypt(left, right uint32, rounds int, keys []uint32) (uint32, uint32) {
 	size := len(keys)
 	for i := 0; i < rounds; i++ {
@@ -16,6 +18,8 @@ func Encrypt(left, right uint32, rounds int, keys []uint32) (uint32, uint32) {
 	return left, right
 }
 
+// Decrypt takes a left and right uint32 and decrypts it using the Feistel cipher,
+// it returns the decrypted left and right parts
 func Decrypt(left, right uint32, rounds int, keys []uint32) (uint32, uint32) {
 	size := len(keys)
 	for i := 0; i < rounds; i++ {
